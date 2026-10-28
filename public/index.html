@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rastreabilidade de CIP — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="tela-login">
+    <div class="marca">
+      <img class="marca-logo" src="assets/logo-heineken-transparente.png" alt="Heineken" />
+    </div>
+    <h1>Rastreabilidade de CIP</h1>
+    <p class="subtitulo-login">Entre com sua conta para continuar.</p>
+
+    <div id="mensagem"></div>
+
+    <form id="form-login">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" required autocomplete="username" />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" required autocomplete="current-password" />
+
+      <div class="botoes">
+        <button type="submit" class="primario" id="btn-entrar">Entrar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const mensagemEl = document.getElementById("mensagem");
+
+    function mostrarErro(texto) {
+      mensagemEl.innerHTML = `<div class="mensagem-erro">${texto}</div>`;
+    }
+
+    redirecionarSeJaLogado();
+
+    document.getElementById("form-login").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      mensagemEl.innerHTML = "";
+      const botao = document.getElementById("btn-entrar");
+      botao.disabled = true;
+      botao.textContent = "Entrando...";
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+
+      const { error } = await fazerLogin(email, senha);
+
+      if (error) {
+        // Não assume mais que todo erro de login é "senha errada": usa
+        // classificarErroSupabase() (auth.js) para diferenciar problema
+        // de configuração, de conexão, de permissão e de credenciais —
+        // cada um com uma mensagem própria, em vez de uma só genérica.
+        console.error("Falha no login:", error);
+        const classificado = classificarErroSupabase(error);
+        mostrarErro(classificado ? classificado.mensagem : "Não foi possível entrar: " + error.message);
+        botao.disabled = false;
+        botao.textContent = "Entrar";
+        return;
+      }
+
+      window.location.href = "painel.html";
+    });
+  </script>
+</body>
+</html>

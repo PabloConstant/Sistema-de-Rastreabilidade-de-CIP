@@ -1,0 +1,10 @@
+[build]
+  publish = "public"
+
+# Site 100% estático (HTML/CSS/JS puro) — não há comando de build nem
+# dependências a instalar.
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404

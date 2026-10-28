@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Painel — Rastreabilidade de CIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="marca">
+        <img class="marca-logo" src="assets/logo-heineken-transparente.png" alt="Heineken" />
+      </div>
+      <nav class="sidebar-nav">
+        <a href="painel.html" class="ativo">Painel</a>
+        <a href="historico.html">Histórico</a>
+      </nav>
+      <div class="sidebar-rodape">
+        <span id="info-usuario"></span>
+        <button type="button" onclick="sair()">Sair</button>
+      </div>
+    </aside>
+
+    <div class="app-conteudo">
+      <main>
+        <!-- =================== VISÃO DO OPERADOR =================== -->
+        <div id="area-operador" class="oculto">
+          <div class="cartao">
+            <div class="secao-titulo">
+              <h2>Novo registro de CIP</h2>
+            </div>
+            <p class="texto-suave">Escolha o tipo de CIP realizado para abrir o formulário correspondente.</p>
+            <div class="grid-cartoes" id="cartoes-tipos"></div>
+          </div>
+
+          <div class="cartao">
+            <div class="secao-titulo">
+              <h2>Registros recentes</h2>
+              <a class="link-voltar" style="margin:0;" href="historico.html">Ver histórico completo &rarr;</a>
+            </div>
+            <p class="texto-suave">Os últimos registros salvos no sistema (login da operação é compartilhado, por isso não é filtrado por pessoa).</p>
+            <div id="recentes-mensagem"></div>
+            <ul class="lista-recentes" id="lista-recentes"></ul>
+          </div>
+        </div>
+
+        <!-- =================== DASHBOARD DO ADMINISTRADOR =================== -->
+        <div id="area-administrador" class="oculto">
+          <div class="secao-titulo">
+            <h2>Painel gerencial</h2>
+            <span class="selo-area">Área administrativa</span>
+          </div>
+          <p class="texto-suave" style="margin-bottom:16px;">
+            Indicadores e gráficos calculados a partir dos registros reais do Supabase. Use os filtros para refinar o período, tipo de CIP ou equipamento — eles atualizam os cartões e os 4 gráficos abaixo.
+          </p>
+
+          <div class="cartao">
+            <div class="filtros">
+              <div>
+                <label for="dash-filtro-tipo">Tipo de CIP</label>
+                <select id="dash-filtro-tipo"><option value="">Todos</option></select>
+              </div>
+              <div>
+                <label for="dash-filtro-data-inicio">Período (de)</label>
+                <input type="date" id="dash-filtro-data-inicio" />
+              </div>
+              <div>
+                <label for="dash-filtro-data-fim">Período (até)</label>
+                <input type="date" id="dash-filtro-data-fim" />
+              </div>
+              <div>
+                <label for="dash-filtro-equipamento">Equipamento</label>
+                <input type="text" id="dash-filtro-equipamento" placeholder="Ex.: TFM 12" />
+              </div>
+              <div class="botoes">
+                <button type="button" class="primario" id="dash-btn-filtrar">Filtrar</button>
+                <button type="button" class="secundario" id="dash-btn-limpar">Limpar</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="dash-mensagem"></div>
+          <p class="texto-suave" id="dash-aviso-limite" style="margin:-8px 0 14px;"></p>
+
+          <div class="grid-kpi">
+            <div class="kpi-cartao">
+              <div class="kpi-rotulo">Total de registros (filtro atual)</div>
+              <div class="kpi-valor" id="kpi-total">—</div>
+            </div>
+            <div class="kpi-cartao">
+              <div class="kpi-rotulo">Registros no mês atual</div>
+              <div class="kpi-valor" id="kpi-mes-atual">—</div>
+            </div>
+            <div class="kpi-cartao">
+              <div class="kpi-rotulo">Equipamentos com registro (no filtro)</div>
+              <div class="kpi-valor" id="kpi-equipamentos">—</div>
+            </div>
+            <div class="kpi-cartao">
+              <div class="kpi-rotulo">Registros por tipo</div>
+              <div class="kpi-detalhe" id="kpi-por-tipo-badges"></div>
+            </div>
+          </div>
+
+          <p class="texto-suave" style="margin:-8px 0 16px;">
+            Um cartão de "registros que necessitam de revisão" não foi incluído: a tabela de registros não tem nenhuma coluna de status ou conformidade, e nenhum valor de referência oficial foi informado para os parâmetros — criar essa classificação aqui seria inventar uma regra que não existe hoje.
+          </p>
+
+          <div class="grid-graficos">
+            <div class="grafico-cartao">
+              <h3>Evolução mensal</h3>
+              <p class="grafico-legenda">Quantidade de registros de CIP por mês.</p>
+              <div class="grafico-controles">
+                <label title="Selecione um período (de/até) para habilitar"><input type="checkbox" id="grafico-a-comparar" disabled /> Comparar com período anterior equivalente</label>
+              </div>
+              <div class="grafico-caixa">
+                <canvas id="grafico-a"></canvas>
+                <div class="oculto" id="grafico-a-estado"></div>
+              </div>
+            </div>
+
+            <div class="grafico-cartao">
+              <h3>Distribuição por tipo</h3>
+              <p class="grafico-legenda">Participação de cada tipo de CIP no período filtrado. Clique em uma fatia para ver os registros.</p>
+              <div class="grafico-caixa">
+                <canvas id="grafico-b"></canvas>
+                <div class="oculto" id="grafico-b-estado"></div>
+              </div>
+            </div>
+
+            <div class="grafico-cartao">
+              <h3>Registros por equipamento</h3>
+              <p class="grafico-legenda">Os 10 equipamentos com mais registros no período. Clique em uma barra para ver os registros.</p>
+              <div class="grafico-caixa">
+                <canvas id="grafico-c"></canvas>
+                <div class="oculto" id="grafico-c-estado"></div>
+              </div>
+            </div>
+
+            <div class="grafico-cartao">
+              <h3>Duração dos CIP</h3>
+              <p class="grafico-legenda" id="grafico-d-nota">Calculada apenas quando a hora inicial e a hora final estão preenchidas.</p>
+              <div class="grafico-controles">
+                <label for="grafico-d-modo">Visualizar:</label>
+                <select id="grafico-d-modo">
+                  <option value="tipo">Média por tipo</option>
+                  <option value="tempo">Evolução ao longo do tempo</option>
+                </select>
+              </div>
+              <div class="grafico-caixa">
+                <canvas id="grafico-d"></canvas>
+                <div class="oculto" id="grafico-d-estado"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/formConfig.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    function painelEscaparHtml(texto) {
+      const div = document.createElement("div");
+      div.textContent = String(texto ?? "");
+      return div.innerHTML;
+    }
+
+    function painelFormatarData(dataIso) {
+      if (!dataIso) return "—";
+      const [ano, mes, dia] = dataIso.split("-");
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    async function carregarRecentes() {
+      const lista = document.getElementById("lista-recentes");
+      const msg = document.getElementById("recentes-mensagem");
+      msg.innerHTML = `<p class="texto-suave">Carregando...</p>`;
+      lista.innerHTML = "";
+
+      const { data, error } = await supabaseClient
+        .from("cip_registros")
+        .select("id, tipo_cip, equipamento, data_cip, nome_operador, criado_em")
+        .order("criado_em", { ascending: false })
+        .limit(5);
+
+      if (error) {
+        const classificado = classificarErroSupabase(error);
+        msg.innerHTML = `<div class="mensagem-erro">${painelEscaparHtml(classificado ? classificado.mensagem : error.message)}</div>`;
+        return;
+      }
+
+      msg.innerHTML = "";
+      if (!data || data.length === 0) {
+        msg.innerHTML = `<p class="texto-suave">Nenhum registro encontrado ainda.</p>`;
+        return;
+      }
+
+      lista.innerHTML = data
+        .map(
+          (r) => `
+          <li>
+            <div class="recente-info">
+              <span>${painelEscaparHtml(TIPO_CIP_LABELS[r.tipo_cip] || r.tipo_cip)} — ${painelEscaparHtml(r.equipamento)}</span>
+              <span class="recente-meta">${painelFormatarData(r.data_cip)} · ${painelEscaparHtml(r.nome_operador)}</span>
+            </div>
+            <a class="secundario" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 14px;font-size:0.82rem;" href="historico.html">Ver</a>
+          </li>
+        `
+        )
+        .join("");
+    }
+
+    (async function init() {
+      const resultado = await exigirSessao();
+      if (!resultado) return;
+      const { perfil } = resultado;
+
+      document.getElementById("info-usuario").textContent =
+        `${perfil.nome} (${perfil.role === "administrador" ? "Administrador" : "Operador"})`;
+
+      if (perfil.role === "operador") {
+        document.getElementById("area-operador").classList.remove("oculto");
+        const container = document.getElementById("cartoes-tipos");
+        Object.entries(FORM_CONFIG).forEach(([tipo, cfg]) => {
+          const a = document.createElement("a");
+          a.className = "cartao-tipo";
+          a.href = `registro.html?tipo=${tipo}`;
+          a.innerHTML = `<h3>${cfg.titulo}</h3><p>${cfg.documentoOrigem}</p>`;
+          container.appendChild(a);
+        });
+        carregarRecentes();
+      } else if (perfil.role === "administrador") {
+        document.getElementById("area-administrador").classList.remove("oculto");
+        iniciarDashboard();
+      }
+    })();
+  </script>
+</body>
+</html>

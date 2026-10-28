@@ -1,0 +1,982 @@
+/* =====================================================================
+   Sistema de Rastreabilidade de CIP — folha de estilo única,
+   compartilhada por todas as páginas (login, painel, formulários,
+   histórico). Paleta e tipografia pensadas para um painel de controle
+   de planta industrial, não para uma página de vendas:
+   - Verde institucional escuro como cor de marca.
+   - Fundo neutro claro (verde-acinzentado, não branco puro nem creme).
+   - Cartões brancos com bordas finas (sem sombras decorativas).
+   - IBM Plex Sans para texto e títulos; IBM Plex Mono reservado para
+     valores de dados (horários, datas, números) — reforça a leitura
+     "painel de instrumentos" nesses valores.
+   ===================================================================== */
+
+:root {
+  /* --- cor --- */
+  --cor-fundo: #eef1ec;
+  --cor-fundo-secao: #e3e9e1;
+  --cor-primaria: #1f4d3a;
+  --cor-primaria-escura: #163b2c;
+  --cor-primaria-clara: #3c7a5c;
+  --cor-admin: #2a4b57;
+  --cor-admin-clara: #4a7a8c;
+  --cor-texto: #1c2621;
+  --cor-texto-suave: #4b5750;
+  --cor-borda: #d7ded3;
+  --cor-borda-forte: #b9c4b7;
+  --cor-branco: #ffffff;
+
+  --cor-sucesso: #2f7d5a;
+  --cor-sucesso-fundo: #e6f3ec;
+  --cor-sucesso-borda: #bfe0ce;
+
+  --cor-aviso: #8a5a12;
+  --cor-aviso-fundo: #fdf3e2;
+  --cor-aviso-borda: #efd6a4;
+
+  --cor-erro: #a23b3b;
+  --cor-erro-fundo: #fbeaea;
+  --cor-erro-borda: #e7c2c2;
+
+  --raio: 6px;
+  --raio-pequeno: 4px;
+  --fonte-texto: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --fonte-dados: "IBM Plex Mono", "Consolas", monospace;
+  --sombra-foco: 0 0 0 3px rgba(31, 77, 58, 0.25);
+}
+
+/* --------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-texto);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.45;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--cor-primaria);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--sombra-foco);
+  border-radius: var(--raio-pequeno);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------
+   Marca / logotipo
+   Logo oficial da Heineken (public/assets/logo-heineken-transparente.png),
+   com fundo transparente preservado — nunca recriada, recortada ou
+   redesenhada. A imagem tem a estrela vermelha e o texto em um verde
+   bem próximo do verde institucional do sistema (#1F4D3A), por isso o
+   cabeçalho usa fundo claro (em vez de um fundo verde escuro) nas
+   páginas onde a logo aparece: colocar essa logo sobre um verde escuro
+   quase apagaria o texto, e o arquivo não pode ser recolorido. Um
+   fundo claro é também como a própria Heineken normalmente apresenta
+   esta logo. A identidade institucional continua presente pela borda
+   inferior verde do cabeçalho e pelos acentos verdes no resto do site.
+   -------------------------------------------------------------------- */
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.marca-logo {
+  height: 34px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* --------------------------------------------------------------------
+   Navegação — menu lateral fixo no computador; no celular, a mesma
+   barra se torna horizontal e rolável no topo (sem gaveta/JS extra).
+   -------------------------------------------------------------------- */
+
+.app-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 230px;
+  min-width: 230px;
+  background: var(--cor-branco);
+  border-right: 1px solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar .marca {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.sidebar-nav a {
+  padding: 9px 12px;
+  border-radius: var(--raio);
+  color: var(--cor-texto);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.sidebar-nav a:hover {
+  background: var(--cor-fundo-secao);
+}
+
+.sidebar-nav a.ativo {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+.sidebar-rodape {
+  border-top: 1px solid var(--cor-borda);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+.sidebar-rodape button {
+  width: 100%;
+  background: var(--cor-branco);
+  color: var(--cor-primaria-escura);
+  border: 1px solid var(--cor-borda-forte);
+  padding: 8px 14px;
+  border-radius: var(--raio);
+  cursor: pointer;
+  font-family: var(--fonte-texto);
+  font-size: 0.85rem;
+}
+
+.sidebar-rodape button:hover {
+  background: var(--cor-fundo-secao);
+}
+
+.app-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    flex-direction: column;
+    min-height: 0;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    border-right: none;
+    border-bottom: 3px solid var(--cor-primaria);
+    padding: 10px 16px;
+    gap: 12px;
+  }
+  .sidebar .marca {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    order: 3;
+  }
+  .sidebar-rodape {
+    flex-direction: row;
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
+    margin-left: auto;
+    order: 2;
+  }
+  .sidebar-rodape button {
+    width: auto;
+  }
+}
+
+/* --------------------------------------------------------------------
+   Estrutura geral
+   -------------------------------------------------------------------- */
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+.secao-titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.secao-titulo h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.texto-suave {
+  color: var(--cor-texto-suave);
+  font-size: 0.88rem;
+}
+
+.cartao {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* --------------------------------------------------------------------
+   Painel do operador — grade de "tiles" de controle, inspirada em
+   painéis HMI/SCADA: barra de destaque à esquerda em vez do padrão
+   genérico de cartão com sombra.
+   -------------------------------------------------------------------- */
+
+.grid-cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.cartao-tipo {
+  display: block;
+  text-decoration: none;
+  color: var(--cor-texto);
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-left: 4px solid var(--cor-primaria-clara);
+  border-radius: var(--raio);
+  padding: 16px 18px;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.cartao-tipo:hover {
+  border-color: var(--cor-primaria-clara);
+  background: #f6f9f6;
+}
+
+.cartao-tipo .indice-tipo {
+  font-family: var(--fonte-dados);
+  font-size: 0.72rem;
+  color: var(--cor-primaria-clara);
+  letter-spacing: 0.04em;
+}
+
+.cartao-tipo h3 {
+  margin: 2px 0 6px;
+  color: var(--cor-primaria-escura);
+  font-size: 1rem;
+}
+
+.cartao-tipo p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+.selo-area {
+  display: inline-block;
+  font-family: var(--fonte-dados);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--cor-admin);
+  background: #eaf1f3;
+  border: 1px solid #cfe0e5;
+  border-radius: 999px;
+  padding: 2px 10px;
+  margin-bottom: 10px;
+}
+
+/* --------------------------------------------------------------------
+   Dashboard administrativo — cartões de indicador (KPI), gráficos e
+   estados de carregamento/vazio/erro. Todos os números vêm do
+   Supabase real; nada fixo ou inventado (ver dashboard.js).
+   -------------------------------------------------------------------- */
+
+.grid-kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.kpi-cartao {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-left: 4px solid var(--cor-admin-clara);
+  border-radius: var(--raio);
+  padding: 14px 16px;
+  min-width: 0;
+}
+
+.kpi-rotulo {
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+  margin-bottom: 4px;
+}
+
+.kpi-valor {
+  font-family: var(--fonte-dados);
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--cor-admin);
+  line-height: 1.1;
+}
+
+.kpi-detalhe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.kpi-detalhe .badge {
+  background: var(--cor-fundo-secao);
+  color: var(--cor-texto-suave);
+  font-family: var(--fonte-dados);
+}
+
+.grid-graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 16px;
+}
+
+.grafico-cartao {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 18px 20px;
+  min-width: 0;
+}
+
+.grafico-cartao h3 {
+  margin: 0 0 2px;
+  font-size: 0.98rem;
+  color: var(--cor-primaria-escura);
+}
+
+.grafico-cartao .grafico-legenda {
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+  margin: 0 0 12px;
+}
+
+.grafico-caixa {
+  position: relative;
+  height: 260px;
+}
+
+.grafico-controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+}
+
+.grafico-controles label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.grafico-controles input[type="checkbox"] {
+  width: auto;
+}
+
+.grafico-controles select {
+  width: auto;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
+.estado-vazio, .estado-carregando, .estado-erro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 120px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+  padding: 10px;
+}
+
+.estado-erro {
+  color: var(--cor-erro);
+}
+
+.lista-recentes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lista-recentes li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--cor-borda);
+  font-size: 0.88rem;
+}
+
+.lista-recentes li:last-child {
+  border-bottom: none;
+}
+
+.lista-recentes .recente-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lista-recentes .recente-meta {
+  font-family: var(--fonte-dados);
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+}
+
+.btn-carregar-mais {
+  display: block;
+  margin: 16px auto 0;
+}
+
+/* --------------------------------------------------------------------
+   Campos de formulário
+   -------------------------------------------------------------------- */
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 14px 0 4px;
+  color: var(--cor-texto);
+}
+
+.marca-obrigatorio {
+  color: var(--cor-erro);
+  font-weight: 700;
+}
+
+.campo {
+  min-width: 0;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  font-size: 0.95rem;
+  font-family: var(--fonte-texto);
+  background: var(--cor-branco);
+  color: var(--cor-texto);
+}
+
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--cor-fundo-secao);
+  color: var(--cor-texto-suave);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 20px;
+}
+
+fieldset {
+  border: 1px solid var(--cor-borda);
+  border-left: 4px solid var(--cor-primaria-clara);
+  border-radius: var(--raio);
+  margin: 18px 0;
+  padding: 6px 16px 16px;
+}
+
+legend {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--cor-primaria-escura);
+  padding: 0 6px;
+}
+
+.campo-ajuda {
+  font-size: 0.82rem;
+  color: var(--cor-texto-suave);
+  margin: -2px 0 10px;
+}
+
+/* --------------------------------------------------------------------
+   Botões
+   -------------------------------------------------------------------- */
+
+.botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+button.primario,
+button.secundario {
+  font-family: var(--fonte-texto);
+  font-size: 0.92rem;
+  padding: 11px 20px;
+  border-radius: var(--raio);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button.primario {
+  background: var(--cor-primaria);
+  color: white;
+  border: 1px solid var(--cor-primaria-escura);
+}
+
+button.primario:hover {
+  background: var(--cor-primaria-escura);
+}
+
+button.secundario {
+  background: var(--cor-branco);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda-forte);
+}
+
+button.secundario:hover {
+  background: var(--cor-fundo-secao);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* Indicador de carregamento: aparece automaticamente sempre que um
+   botão primário é desabilitado durante uma operação assíncrona
+   (login, salvar registro) — sem precisar de imagens ou bibliotecas. */
+button.primario:disabled::after {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------------------------
+   Mensagens de sistema (sucesso / aviso / erro)
+   -------------------------------------------------------------------- */
+
+.mensagem-erro,
+.mensagem-sucesso,
+.mensagem-aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border-radius: var(--raio);
+  padding: 11px 14px;
+  margin: 14px 0;
+  font-size: 0.9rem;
+  border: 1px solid;
+  border-left-width: 4px;
+}
+
+.mensagem-erro::before,
+.mensagem-sucesso::before,
+.mensagem-aviso::before {
+  font-family: var(--fonte-dados);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.mensagem-erro {
+  color: var(--cor-erro);
+  background: var(--cor-erro-fundo);
+  border-color: var(--cor-erro-borda);
+  border-left-color: var(--cor-erro);
+}
+
+.mensagem-erro::before {
+  content: "✕";
+}
+
+.mensagem-sucesso {
+  color: var(--cor-sucesso);
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso-borda);
+  border-left-color: var(--cor-sucesso);
+}
+
+.mensagem-sucesso::before {
+  content: "✓";
+}
+
+.mensagem-aviso {
+  color: var(--cor-aviso);
+  background: var(--cor-aviso-fundo);
+  border-color: var(--cor-aviso-borda);
+  border-left-color: var(--cor-aviso);
+}
+
+.mensagem-aviso::before {
+  content: "!";
+}
+
+/* --------------------------------------------------------------------
+   Filtros (histórico)
+   -------------------------------------------------------------------- */
+
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0 16px;
+  align-items: end;
+}
+
+.filtros .botoes {
+  margin-top: 14px;
+}
+
+/* --------------------------------------------------------------------
+   Tabela de histórico — vira cartões empilhados em telas estreitas
+   usando o atributo data-label de cada <td> (técnica sem JavaScript
+   extra: o próprio historico.js já escreve o atributo).
+   -------------------------------------------------------------------- */
+
+table.tabela-historico {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.88rem;
+}
+
+table.tabela-historico th,
+table.tabela-historico td {
+  border-bottom: 1px solid var(--cor-borda);
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+table.tabela-historico td {
+  font-family: var(--fonte-dados);
+  font-size: 0.85rem;
+}
+
+table.tabela-historico td.col-texto {
+  font-family: var(--fonte-texto);
+  font-size: 0.88rem;
+}
+
+table.tabela-historico thead th {
+  background: var(--cor-fundo-secao);
+  color: var(--cor-primaria-escura);
+  font-family: var(--fonte-texto);
+  position: sticky;
+  top: 0;
+}
+
+table.tabela-historico tbody tr:hover {
+  background: #f6f9f6;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--fonte-texto);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #e7eee9;
+  color: var(--cor-primaria-escura);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  table.tabela-historico thead {
+    display: none;
+  }
+
+  table.tabela-historico, table.tabela-historico tbody, table.tabela-historico tr, table.tabela-historico td {
+    display: block;
+    width: 100%;
+  }
+
+  table.tabela-historico tr {
+    border: 1px solid var(--cor-borda);
+    border-left: 4px solid var(--cor-primaria-clara);
+    border-radius: var(--raio);
+    padding: 6px 12px;
+    margin-bottom: 12px;
+  }
+
+  table.tabela-historico td {
+    border-bottom: 1px dashed var(--cor-borda);
+    padding: 7px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    text-align: right;
+  }
+
+  table.tabela-historico td:last-child {
+    border-bottom: none;
+    justify-content: flex-end;
+  }
+
+  table.tabela-historico td[data-label]::before {
+    content: attr(data-label);
+    font-family: var(--fonte-texto);
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--cor-texto-suave);
+    text-align: left;
+  }
+
+  table.tabela-historico td:last-child::before {
+    content: "";
+  }
+}
+
+/* --------------------------------------------------------------------
+   Detalhe de registro
+   -------------------------------------------------------------------- */
+
+.detalhe-registro {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 18px 20px;
+  margin-top: 10px;
+  background: var(--cor-branco);
+}
+
+.detalhe-registro h3 {
+  margin-top: 0;
+  color: var(--cor-primaria-escura);
+}
+
+.campo-dado {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--cor-borda);
+  font-size: 0.88rem;
+}
+
+.campo-dado span:first-child {
+  color: var(--cor-texto-suave);
+}
+
+.campo-dado .valor {
+  font-family: var(--fonte-dados);
+  font-weight: 600;
+  text-align: right;
+}
+
+.lista-edicoes, .lista-observacoes {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+.lista-edicoes li, .lista-observacoes li {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 0.86rem;
+}
+
+.lista-edicoes .meta, .lista-observacoes .meta {
+  color: var(--cor-texto-suave);
+  font-family: var(--fonte-dados);
+  font-size: 0.76rem;
+  margin-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------
+   Login
+   -------------------------------------------------------------------- */
+
+.tela-login {
+  max-width: 400px;
+  margin: 8vh auto;
+  padding: 36px 32px 32px;
+  background: var(--cor-branco);
+  border-radius: var(--raio);
+  border: 1px solid var(--cor-borda);
+}
+
+.tela-login .marca {
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.tela-login .marca-logo {
+  height: 56px;
+}
+
+.tela-login h1 {
+  color: var(--cor-primaria-escura);
+  font-size: 1.25rem;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.tela-login .subtitulo-login {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+  margin: 0 0 20px;
+}
+
+.tela-erro {
+  max-width: 480px;
+  margin: 10vh auto;
+  padding: 32px;
+  background: var(--cor-branco);
+  border-radius: var(--raio);
+  border: 1px solid var(--cor-borda);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------
+   Utilitários
+   -------------------------------------------------------------------- */
+
+.rodape-doc {
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+  margin-top: -6px;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.link-voltar {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--cor-primaria);
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.link-voltar:hover {
+  text-decoration: underline;
+}
+
+.dados-demonstrativos {
+  display: inline-block;
+  font-family: var(--fonte-dados);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  color: var(--cor-aviso);
+  background: var(--cor-aviso-fundo);
+  border: 1px solid var(--cor-aviso-borda);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+@media (max-width: 560px) {
+  main {
+    padding: 16px 12px 48px;
+  }
+
+  .tela-login {
+    margin: 4vh auto;
+    padding: 28px 22px 24px;
+  }
+
+  .marca h1 {
+    font-size: 0.95rem;
+  }
+}
