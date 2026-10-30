@@ -10,85 +10,83 @@
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
+  <header class="topo">
+    <div class="topo-interno">
       <div class="marca">
         <img class="marca-logo" src="assets/logo-heineken-transparente.png" alt="Heineken" />
       </div>
-      <nav class="sidebar-nav">
-        <a href="painel.html">Painel</a>
-        <a href="historico.html" class="ativo">Histórico</a>
+      <nav class="navegacao-topo">
+        <a href="painel.html" class="link-nav">Painel</a>
+        <a href="historico.html" class="link-nav ativo">Histórico</a>
       </nav>
-      <div class="sidebar-rodape">
+      <div class="usuario-topo">
         <span id="info-usuario"></span>
         <button type="button" onclick="sair()">Sair</button>
       </div>
-    </aside>
-
-    <div class="app-conteudo">
-      <main>
-        <a class="link-voltar" href="painel.html">&larr; Voltar ao painel</a>
-
-        <div class="cartao">
-          <h2 style="margin-top:0;">Histórico de registros de CIP</h2>
-
-          <div class="filtros">
-            <div>
-              <label for="f-tipo">Tipo de CIP</label>
-              <select id="f-tipo">
-                <option value="">Todos</option>
-              </select>
-            </div>
-            <div>
-              <label for="f-data-inicio">Data (de)</label>
-              <input type="date" id="f-data-inicio" />
-            </div>
-            <div>
-              <label for="f-data-fim">Data (até)</label>
-              <input type="date" id="f-data-fim" />
-            </div>
-            <div>
-              <label for="f-operador">Operador</label>
-              <input type="text" id="f-operador" placeholder="Nome do operador" />
-            </div>
-            <div>
-              <label for="f-equipamento">Equipamento</label>
-              <input type="text" id="f-equipamento" placeholder="Ex.: Tanque de Fermentação 15" />
-            </div>
-            <div>
-              <label for="f-texto">Pesquisar</label>
-              <input type="text" id="f-texto" placeholder="Equipamento, operador ou observações" />
-            </div>
-            <div class="botoes">
-              <button type="button" class="primario" id="btn-filtrar">Filtrar</button>
-              <button type="button" class="secundario" id="btn-limpar">Limpar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="cartao">
-          <div id="mensagem"></div>
-          <div id="resumo-resultado" class="texto-suave" style="margin-bottom:8px;"></div>
-          <table class="tabela-historico">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Tipo de CIP</th>
-                <th>Equipamento</th>
-                <th>Operador</th>
-                <th>Hora Inicial</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="corpo-tabela"></tbody>
-          </table>
-          <button type="button" class="secundario btn-carregar-mais oculto" id="btn-carregar-mais">Carregar mais registros</button>
-        </div>
-
-        <div id="area-detalhe"></div>
-      </main>
     </div>
-  </div>
+  </header>
+
+  <main class="conteudo">
+    <a class="link-voltar" href="painel.html">&larr; Voltar ao painel</a>
+
+    <div class="cartao">
+      <h2 style="margin-top:0;">Histórico de registros de CIP</h2>
+
+      <div class="barra-filtros">
+        <div class="campo-filtro">
+          <label for="f-tipo">Tipo de CIP</label>
+          <select id="f-tipo">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="campo-filtro">
+          <label for="f-data-inicio">Data (de)</label>
+          <input type="date" id="f-data-inicio" />
+        </div>
+        <div class="campo-filtro">
+          <label for="f-data-fim">Data (até)</label>
+          <input type="date" id="f-data-fim" />
+        </div>
+        <div class="campo-filtro">
+          <label for="f-operador">Operador</label>
+          <input type="text" id="f-operador" placeholder="Nome do operador" />
+        </div>
+        <div class="campo-filtro">
+          <label for="f-equipamento">Equipamento</label>
+          <input type="text" id="f-equipamento" placeholder="Ex.: Tanque de Fermentação 15" />
+        </div>
+        <div class="campo-filtro largo">
+          <label for="f-texto">Pesquisar</label>
+          <input type="text" id="f-texto" placeholder="Equipamento, operador ou observações" />
+        </div>
+        <div class="botoes">
+          <button type="button" class="primario" id="btn-filtrar">Filtrar</button>
+          <button type="button" class="secundario" id="btn-limpar">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cartao">
+      <div id="mensagem"></div>
+      <div id="resumo-resultado" class="texto-suave" style="margin-bottom:8px;"></div>
+      <table class="tabela-historico">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Tipo de CIP</th>
+            <th>Equipamento</th>
+            <th>Operador</th>
+            <th>Hora Inicial</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+      </table>
+      <button type="button" class="secundario btn-carregar-mais oculto" id="btn-carregar-mais">Carregar mais registros</button>
+    </div>
+
+    <div id="area-detalhe"></div>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
   <script src="js/config.js"></script>

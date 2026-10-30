@@ -321,6 +321,13 @@ async function init() {
   document.getElementById("btn-carregar-mais").addEventListener("click", carregarProximaPagina);
 
   await carregarPrimeiraPagina();
+
+  // Abre direto o detalhe de um registro específico quando chegamos aqui
+  // a partir de um link do painel do operador (ex.: "Ver detalhes" nos
+  // registros recentes) — não interfere nos filtros nem na listagem.
+  if (params.get("registroId")) {
+    abrirDetalhe(params.get("registroId"));
+  }
 }
 
 init();

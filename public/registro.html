@@ -10,82 +10,80 @@
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
+  <header class="topo">
+    <div class="topo-interno">
       <div class="marca">
         <img class="marca-logo" src="assets/logo-heineken-transparente.png" alt="Heineken" />
       </div>
-      <nav class="sidebar-nav">
-        <a href="painel.html">Painel</a>
-        <a href="historico.html">Histórico</a>
+      <nav class="navegacao-topo">
+        <a href="painel.html" class="link-nav">Painel</a>
+        <a href="historico.html" class="link-nav">Histórico</a>
       </nav>
-      <div class="sidebar-rodape">
+      <div class="usuario-topo">
         <span id="info-usuario"></span>
         <button type="button" onclick="sair()">Sair</button>
       </div>
-    </aside>
-
-    <div class="app-conteudo">
-      <main>
-        <a class="link-voltar" href="painel.html">&larr; Voltar ao painel</a>
-
-        <div class="cartao">
-          <h2 id="titulo-formulario" style="margin-top:0;"></h2>
-          <p class="rodape-doc" id="doc-origem"></p>
-
-          <div id="mensagem"></div>
-
-          <form id="form-cip">
-            <fieldset>
-              <legend>Identificação do CIP</legend>
-              <div class="form-grid" id="campos-topo"></div>
-            </fieldset>
-            <fieldset>
-              <legend>Detalhes do CIP</legend>
-              <p class="campo-ajuda">
-                Os parâmetros abaixo seguem o procedimento original; os
-                documentos de referência não fixam unidades (%, °C, bar) para
-                estes campos, por isso eles permanecem de texto livre — informe
-                a unidade junto do valor quando o procedimento exigir.
-              </p>
-              <div class="form-grid" id="campos-dados"></div>
-            </fieldset>
-
-            <label for="observacoes">Observações</label>
-            <textarea id="observacoes" placeholder="Observações do operador sobre este CIP (opcional)"></textarea>
-
-            <div id="area-justificativa" class="oculto">
-              <fieldset>
-                <legend>Autoria e justificativa da alteração (obrigatórias)</legend>
-
-                <label for="nome_quem_edita">Nome de quem está fazendo esta alteração</label>
-                <p style="font-size:0.85rem;color:#556;margin-top:0;">
-                  Como a conta de operador é compartilhada, este nome é o único
-                  jeito de saber quem fez esta edição — pode ser diferente do
-                  campo "Operador" do registro (que identifica o responsável
-                  pelo CIP, não quem está editando agora).
-                </p>
-                <input type="text" id="nome_quem_edita" placeholder="Seu nome" />
-
-                <label for="justificativa">Justificativa da alteração</label>
-                <p style="font-size:0.85rem;color:#556;margin-top:0;">
-                  Explique brevemente o que foi alterado. Não é permitido deixar em
-                  branco, usar apenas números/símbolos, ou respostas genéricas
-                  como "erro", "corrigir" ou "alteração".
-                </p>
-                <textarea id="justificativa" placeholder='Ex.: "Corrigi a data" ou "Troquei o nome do operador"'></textarea>
-              </fieldset>
-            </div>
-
-            <div class="botoes">
-              <button type="submit" class="primario" id="btn-salvar">Salvar</button>
-              <a class="secundario" href="painel.html" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 20px;">Cancelar</a>
-            </div>
-          </form>
-        </div>
-      </main>
     </div>
-  </div>
+  </header>
+
+  <main class="conteudo">
+    <a class="link-voltar" href="painel.html">&larr; Voltar ao painel</a>
+
+    <div class="cartao">
+      <h2 id="titulo-formulario" style="margin-top:0;"></h2>
+      <p class="rodape-doc" id="doc-origem"></p>
+
+      <div id="mensagem"></div>
+
+      <form id="form-cip">
+        <fieldset>
+          <legend>Identificação do CIP</legend>
+          <div class="form-grid" id="campos-topo"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Detalhes do CIP</legend>
+          <p class="campo-ajuda">
+            Os parâmetros abaixo seguem o procedimento original; os
+            documentos de referência não fixam unidades (%, °C, bar) para
+            estes campos, por isso eles permanecem de texto livre — informe
+            a unidade junto do valor quando o procedimento exigir.
+          </p>
+          <div class="form-grid" id="campos-dados"></div>
+        </fieldset>
+
+        <label for="observacoes">Observações</label>
+        <textarea id="observacoes" placeholder="Observações do operador sobre este CIP (opcional)"></textarea>
+
+        <div id="area-justificativa" class="oculto">
+          <fieldset>
+            <legend>Autoria e justificativa da alteração (obrigatórias)</legend>
+
+            <label for="nome_quem_edita">Nome de quem está fazendo esta alteração</label>
+            <p style="font-size:0.85rem;color:#556;margin-top:0;">
+              Como a conta de operador é compartilhada, este nome é o único
+              jeito de saber quem fez esta edição — pode ser diferente do
+              campo "Operador" do registro (que identifica o responsável
+              pelo CIP, não quem está editando agora).
+            </p>
+            <input type="text" id="nome_quem_edita" placeholder="Seu nome" />
+
+            <label for="justificativa">Justificativa da alteração</label>
+            <p style="font-size:0.85rem;color:#556;margin-top:0;">
+              Explique brevemente o que foi alterado. Não é permitido deixar em
+              branco, usar apenas números/símbolos, ou respostas genéricas
+              como "erro", "corrigir" ou "alteração".
+            </p>
+            <textarea id="justificativa" placeholder='Ex.: "Corrigi a data" ou "Troquei o nome do operador"'></textarea>
+          </fieldset>
+        </div>
+
+        <div class="botoes">
+          <button type="submit" class="primario" id="btn-salvar">Salvar</button>
+          <a class="secundario" href="painel.html" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 20px;">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
   <script src="js/config.js"></script>
